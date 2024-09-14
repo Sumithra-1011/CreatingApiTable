@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { TableColumnsType} from "antd";
 import { Table } from "antd";
 
+
 interface Stock {
   price: number;
   ticker: string;
@@ -32,22 +33,24 @@ const columns: TableColumnsType<Stock> = [  //Passing Data for Table columns
   },
 ];
 
-export const DataFetching = () => {
+export const DataFetching = () => { 
   const fetchdata = () =>
     axios //Fetching data from Api
       .get(
         "https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey=demo"
       )
-      .then((res) => res.data.top_gainers); // Extracting 'top_gainers' array from response
+      .then((res) => res.data.top_gainers);
+       // Extracting 'top_gainers' array from response
 
   const {
     data: feachValues,
     error,
     isLoading,
+    
   } = useQuery<Stock[], Error>({  // using react query for caching
     queryKey: ["Stockdata"],
     queryFn: fetchdata,
-    staleTime: 1 * 60 * 1000, //1m
+    // staleTime: 1 * 60 * 1000, //1m
   });
 
   if (isLoading) return <p>Loading...</p>; // display loading
